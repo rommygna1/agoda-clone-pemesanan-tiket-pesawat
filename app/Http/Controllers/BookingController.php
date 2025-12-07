@@ -7,6 +7,7 @@ use App\Models\Flight;
 use App\Models\Booking;
 use App\Models\Passenger;
 use App\Models\Airport;
+use App\Models\Airline; // Tambahkan Model Airline
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -14,65 +15,102 @@ use Illuminate\Support\Facades\Auth;
 class BookingController extends Controller
 {
     /**
-     * LOGIC 1: HASIL PENCARIAN
-     * Menampilkan daftar penerbangan berdasarkan input user dari Landing Page.
+     * LOGIC 1: HASIL PENCARIAN (ADVANCED & GLOBAL)
+     * Menampilkan daftar penerbangan dengan Filter & Sorting.
      */
     public function search(Request $request)
     {
-        // 1. Validasi Input agar tidak kosong/asal
-        $request->validate([
-            'origin' => 'required|exists:airports,id',
-            'destination' => 'required|exists:airports,id|different:origin',
-            'date' => 'required|date|after_or_equal:today',
-            'passengers' => 'required|integer|min:1|max:10',
-        ]);
+        // 1. Ambil Data Dasar untuk Dropdown (agar tidak error di view)
+        $airports = Airport::all();
 
-        // 2. Ambil data input
-        $originId = $request->origin;
-        $destinationId = $request->destination;
-        $date = $request->date;
-        $passengers = $request->passengers;
+        // 2. Query Builder Utama
+        $query = Flight::with(['airline', 'origin', 'destination']);
 
-        // 3. Query Database: Cari penerbangan yang cocok
-        $flights = Flight::with(['airline', 'origin', 'destination'])
-            ->where('origin_airport_id', $originId)
-            ->where('destination_airport_id', $destinationId)
-            ->whereDate('departure_time', $date)
-            ->where('available_seats', '>=', $passengers) // Pastikan kursi cukup
-            ->orderBy('price', 'asc') // Urutkan dari termurah
-            ->get();
+        // --- FILTER RUTE (Wajib) ---
+        if ($request->origin) {
+            $query->where('origin_airport_id', $request->origin);
+        }
+        if ($request->destination) {
+            $query->where('destination_airport_id', $request->destination);
+        }
 
-        // 4. Ambil data Airport untuk ditampilkan di Header Halaman
-        $origin = Airport::find($originId);
-        $destination = Airport::find($destinationId);
+        // --- FILTER JUMLAH PENUMPANG ---
+        // Hanya tampilkan penerbangan yang sisa kursinya cukup
+        $passengers = $request->input('passengers', 1);
+        $query->where('available_seats', '>=', $passengers);
 
-        // 5. Kirim data ke View (Kita akan buat view ini di langkah berikutnya)
-        return view('frontend.search', compact('flights', 'origin', 'destination', 'date', 'passengers'));
+        // --- FILTER TANGGAL (GLOBAL SEARCH) ---
+        // Mencari penerbangan mulai dari tanggal yang dipilih ke masa depan
+        $searchDate = $request->date ? $request->date : now()->format('Y-m-d');
+        $query->whereDate('departure_time', '>=', $searchDate);
+
+        // --- FILTER TAMBAHAN (Maskapai & Harga) ---
+        if ($request->has('airlines') && is_array($request->airlines)) {
+            $query->whereIn('airline_id', $request->airlines);
+        }
+        if ($request->has('min_price') && $request->min_price != null) {
+            $query->where('price', '>=', $request->min_price);
+        }
+        if ($request->has('max_price') && $request->max_price != null) {
+            $query->where('price', '<=', $request->max_price);
+        }
+
+        // --- SORTING (Pengurutan) ---
+        $sort = $request->input('sort', 'cheapest');
+        switch ($sort) {
+            case 'cheapest':
+                $query->orderBy('price', 'asc');
+                break;
+            case 'earliest':
+                $query->orderBy('departure_time', 'asc');
+                break;
+            case 'latest':
+                $query->orderBy('departure_time', 'desc');
+                break;
+            default:
+                $query->orderBy('price', 'asc');
+        }
+
+        // Eksekusi Query dengan Pagination
+        $flights = $query->paginate(10)->withQueryString();
+
+        // Ambil daftar maskapai yang TERSEDIA saja untuk sidebar filter
+        $availableAirlines = Airline::whereHas('flights', function($q) use ($request, $searchDate) {
+            if($request->origin) $q->where('origin_airport_id', $request->origin);
+            if($request->destination) $q->where('destination_airport_id', $request->destination);
+            $q->whereDate('departure_time', '>=', $searchDate);
+        })->get();
+
+        // Kirim data ke View 'frontend.search'
+        return view('frontend.search', compact('flights', 'airports', 'availableAirlines', 'passengers'));
     }
 
     /**
      * LOGIC 2: FORM BOOKING
-     * Menampilkan halaman pengisian data penumpang setelah user klik "Pilih".
+     * Menampilkan halaman pengisian data penumpang.
      */
     public function create(Request $request, $flight_id)
     {
-        // Cari flight, jika tidak ada tampilkan 404
+        // Pastikan User Login Sebelum Booking
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        }
+
         $flight = Flight::with(['airline', 'origin', 'destination'])->findOrFail($flight_id);
         
         // Ambil jumlah penumpang dari URL (default 1)
         $passengersCount = $request->query('passengers', 1);
 
-        // Tampilkan view form booking
         return view('frontend.book', compact('flight', 'passengersCount'));
     }
 
     /**
-     * LOGIC 3: PROSES CHECKOUT (PENTING!)
-     * Menyimpan data booking dan penumpang ke database.
+     * LOGIC 3: PROSES CHECKOUT (DATABASE TRANSACTION)
+     * Menyimpan Booking -> Penumpang -> Kurangi Stok
      */
     public function store(Request $request)
     {
-        // 1. Validasi Data Penumpang
+        // 1. Validasi Data
         $request->validate([
             'flight_id' => 'required|exists:flights,id',
             'passengers' => 'required|array',
@@ -85,27 +123,31 @@ class BookingController extends Controller
 
         $flight = Flight::findOrFail($request->flight_id);
         $totalPassengers = count($request->passengers);
+        
+        // Cek lagi apakah stok masih cukup (mencegah race condition)
+        if ($flight->available_seats < $totalPassengers) {
+            return back()->with('error', 'Maaf, kursi sudah habis terjual beberapa detik yang lalu.');
+        }
+
         $totalPrice = $flight->price * $totalPassengers;
 
-        // 2. DATABASE TRANSACTION
-        // Gunakan ini agar jika error di tengah jalan, data tidak tersimpan setengah-setengah.
+        // 2. MULAI TRANSAKSI DATABASE
         try {
             return DB::transaction(function () use ($request, $flight, $totalPrice, $totalPassengers) {
                 
-                // A. Generate Kode Booking Unik (contoh: AGD-8X92A)
+                // A. Buat Booking Header
                 $bookingCode = 'AGD-' . strtoupper(Str::random(6));
-
-                // B. Simpan ke Tabel Bookings
+                
                 $booking = Booking::create([
-                    'user_id' => Auth::id(), // User yang sedang login
-                    'flight_id' => $flight->id,
                     'booking_code' => $bookingCode,
+                    'user_id' => Auth::id(),
+                    'flight_id' => $flight->id,
                     'total_passengers' => $totalPassengers,
                     'total_amount' => $totalPrice,
-                    'status' => 'pending', // Status awal Pending (Belum bayar)
+                    'status' => 'pending', // Menunggu pembayaran
                 ]);
 
-                // C. Simpan Detail Setiap Penumpang
+                // B. Simpan Data Penumpang
                 foreach ($request->passengers as $paxData) {
                     Passenger::create([
                         'booking_id' => $booking->id,
@@ -114,37 +156,35 @@ class BookingController extends Controller
                         'last_name' => $paxData['last_name'],
                         'date_of_birth' => $paxData['date_of_birth'],
                         'nationality' => $paxData['nationality'],
-                        'passport_number' => $paxData['passport_number'] ?? null, // Opsional
+                        'passport_number' => $paxData['passport_number'] ?? null,
                     ]);
                 }
 
-                // D. Kurangi Stok Kursi Pesawat
+                // C. Kurangi Stok Kursi
                 $flight->decrement('available_seats', $totalPassengers);
 
-                // E. Redirect ke halaman Sukses/Detail
+                // D. Redirect ke Halaman Sukses
                 return redirect()->route('booking.show', $booking->booking_code)
-                    ->with('success', 'Booking berhasil dibuat! Silakan lakukan pembayaran.');
+                    ->with('success', 'Booking berhasil! Silakan lakukan pembayaran.');
             });
 
         } catch (\Exception $e) {
-            // Jika error, kembalikan ke form dengan pesan error
             return back()->with('error', 'Terjadi kesalahan sistem: ' . $e->getMessage());
         }
     }
 
     /**
-     * LOGIC 4: LIHAT TIKET / DETAIL BOOKING
+     * LOGIC 4: LIHAT TIKET / HALAMAN PEMBAYARAN
      */
     public function show($code)
     {
-        // Cari booking berdasarkan kode unik
         $booking = Booking::where('booking_code', $code)
             ->with(['flight.airline', 'flight.origin', 'flight.destination', 'passengers'])
             ->firstOrFail();
 
-        // Keamanan: Pastikan hanya pemilik booking yang bisa lihat
+        // Keamanan: Hanya pemilik atau admin yang boleh lihat
         if ($booking->user_id !== Auth::id() && Auth::user()->role !== 'admin') {
-            abort(403, 'Unauthorized action.');
+            abort(403, 'Anda tidak memiliki akses ke tiket ini.');
         }
 
         return view('frontend.booking-success', compact('booking'));
