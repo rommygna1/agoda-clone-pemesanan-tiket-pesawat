@@ -3,6 +3,7 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\EnsureIsAdmin; // <--- 1. Tambahkan ini
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -11,9 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Tambahkan alias ini
+        // --- 2. Tambahkan alias di sini ---
         $middleware->alias([
-            'admin' => \App\Http\Middleware\EnsureIsAdmin::class,
+            'admin' => EnsureIsAdmin::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

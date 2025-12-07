@@ -28,7 +28,7 @@
                             <tr>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     @if($airline->logo)
-                                        <img src="{{ asset('storage/' . $airline->logo) }}" alt="Logo" class="h-10 w-10 object-contain">
+                                        <img src="{{ asset('storage/' . $airline->logo) }}" alt="Logo" class="h-40 w-40 object-contain">
                                     @else
                                         <span class="text-gray-400">No Logo</span>
                                     @endif

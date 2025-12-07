@@ -9,19 +9,14 @@ use Illuminate\Support\Facades\Auth;
 
 class EnsureIsAdmin
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        // Cek apakah user sudah login DAN role-nya admin
+        // Cek Login DAN Role (role === 'admin')
         if (Auth::check() && Auth::user()->role === 'admin') {
             return $next($request);
         }
 
-        // Jika bukan admin, tendang ke halaman home atau dashboard user
+        // Jika gagal, tendang ke halaman depan
         return redirect('/');
     }
 }
