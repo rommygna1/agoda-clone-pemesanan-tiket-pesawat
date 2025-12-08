@@ -87,14 +87,14 @@
             <div class="flex items-center">
                 <a href="/" class="mr-8">
                     <img src="https://images.seeklogo.com/logo-png/37/1/agoda-logo-png_seeklogo-371025.png"
-                        alt="Agoda" class="h-19 md:h-16 w-auto">
+                        alt="Agoda" class="h-20 md:h-16 w-auto">
                 </a>
 
                 <div class="hidden lg:flex space-x-5 text-[15px] font-semibold text-[#53535f]">
-                    <a href="#" class="hover:text-black flex items-center **inline-flex items-end**">
+                    <a href="#" class="hover:text-black inline-flex items-end">
                         Pesawat + Hotel
                         <span
-                            class="bg-[#e12d2d] text-white text-[10px] px-1.5 py-[1px] rounded-sm ml-1.5 font-bold uppercase leading-tight">Paket
+                            class="bg-[#e12d2d] text-white text-[10px] px-1.5 py-[4px] rounded-sm ml-1.5 font-bold uppercase leading-tight">Paket
                             hemat!</span>
                     </a>
                     <a href="#" class="hover:text-black **inline-flex items-end**">Akomodasi</a>
@@ -351,14 +351,19 @@
             </div>
         </div>
     </div>
-    <div class="max-w-[1240px] mx-auto px-4 py-12">
+
+    {{-- SECTION: Inspirasi liburan Indonesia --}}
+    <div class="max-w-[1240px] mx-auto px-4 py-12 mt-20">
         <h2 class="text-[28px] font-bold text-[#2a2a2e] mb-8">Yuk, cek inspirasi liburan di Indonesia ini</h2>
 
         <div class="flex overflow-x-auto space-x-5 pb-4 scrollbar-hide">
+
+            <!-- Jakarta -->
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1555891674-37c7737c7efb?w=400&h=400&fit=crop"
+                    <img
+                        src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=800&q=60"
                         alt="Jakarta"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -366,10 +371,12 @@
                 <p class="text-[14px] text-[#53535f]">14.249 akomodasi</p>
             </a>
 
+            <!-- Bandung -->
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?w=400&h=400&fit=crop"
+                    <img
+                        src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=60"
                         alt="Bandung"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -377,10 +384,12 @@
                 <p class="text-[14px] text-[#53535f]">7.196 akomodasi</p>
             </a>
 
+            <!-- Yogyakarta -->
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1601815619928-a5ad8fea2e1d?w=400&h=400&fit=crop"
+                    <img
+                        src="https://images.unsplash.com/photo-1578469550956-0e16b69c6a3d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8am9namFrYXJ0YXxlbnwwfHwwfHx8MA%3D%3D"
                         alt="Yogyakarta"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -388,6 +397,7 @@
                 <p class="text-[14px] text-[#53535f]">5.503 akomodasi</p>
             </a>
 
+            <!-- Surabaya -->
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
@@ -399,6 +409,7 @@
                 <p class="text-[14px] text-[#53535f]">3.145 akomodasi</p>
             </a>
 
+            <!-- Bali -->
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
@@ -412,6 +423,7 @@
         </div>
     </div>
 
+    {{-- SECTION: Promo akomodasi --}}
     <div class="max-w-[1240px] mx-auto px-4 py-12">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-[28px] font-bold text-[#2a2a2e]">Jangan sampai kelewatan promo akomodasi ini!</h2>
@@ -453,6 +465,7 @@
         </div>
     </div>
 
+    {{-- SECTION: Promo penerbangan & aktivitas --}}
     <div class="max-w-[1240px] mx-auto px-4 py-12">
         <h2 class="text-[28px] font-bold text-[#2a2a2e] mb-8">Liburan lebih irit pakai promo Penerbangan & Aktivitas
             ini!</h2>
@@ -491,6 +504,8 @@
             </div>
         </div>
     </div>
+
+    {{-- SECTION: Rumah liburan di Agoda --}}
     <div class="max-w-[1240px] mx-auto px-4 py-12">
         <h2 class="text-[28px] font-bold text-[#2a2a2e] mb-8">Coba suasana yang beda, cek rumah liburan di Agoda!</h2>
 
@@ -610,6 +625,8 @@
             </a>
         </div>
     </div>
+
+    {{-- SECTION: Destinasi luar Indonesia --}}
     <div class="max-w-[1240px] mx-auto px-4 py-12">
         <h2 class="text-[28px] font-bold text-[#2a2a2e] mb-8">Destinasi populer di luar Indonesia</h2>
 
@@ -639,7 +656,7 @@
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1564500299591-e9c880d726f4?w=400&h=400&fit=crop"
+                    <img src="https://plus.unsplash.com/premium_photo-1661951189203-12decb9d7f8e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OXx8dGFpY2h1bmclMjBjaXR5fGVufDB8fDB8fHww"
                         alt="Taichung"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -661,7 +678,7 @@
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img src="https://images.unsplash.com/photo-1598971457999-ca8e5dfaf5e8?w=400&h=400&fit=crop"
+                    <img src="https://images.unsplash.com/photo-1687861717577-8ff74dd61a47?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8am9ob3IlMjBiYWhydXxlbnwwfHwwfHx8MA%3D%3D"
                         alt="Johor Bahru"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -671,6 +688,7 @@
         </div>
     </div>
 
+    {{-- FOOTER UTAMA --}}
     <footer class="bg-[#f7f9fa] border-t border-gray-200 mt-16">
         <div class="max-w-[1240px] mx-auto px-4 py-12">
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8 mb-12">
@@ -745,30 +763,47 @@
                     </ul>
                 </div>
             </div>
+        </div>
 
-            <div class="border-t border-gray-300 pt-8">
-                <p class="text-[13px] text-[#53535f] text-center mb-6">
+        {{-- FOOTER BAWAH GELAP DENGAN LOGO GROUP --}}
+        <footer class="bg-[#2a2b2f] text-gray-300 pt-10 pb-20 w-full">
+            <div class="max-w-7xl mx-auto px-4">
+                <p class="text-[14px] text-center mb-2">
                     Hak cipta © 2005 – 2025 Agoda Company Pte. Ltd. Semua Hak Dilindungi Undang-undang.
                 </p>
-                <p class="text-[13px] text-[#53535f] text-center mb-8">
+                <p class="text-[14px] text-center mb-10">
                     Agoda adalah bagian dari Booking Holdings Inc., pemimpin bisnis perjalanan online dan layanan
                     terkait lainnya di dunia.
                 </p>
 
-                <div class="flex justify-center items-center space-x-8 flex-wrap gap-4">
-                    <img src="https://logos-world.net/wp-content/uploads/2021/03/Agoda-Logo.png" alt="Agoda"
-                        class="h-8 opacity-60 hover:opacity-100 transition">
-                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Priceline-Logo.png" alt="Priceline"
-                        class="h-8 opacity-60 hover:opacity-100 transition">
-                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Kayak-Logo.png" alt="Kayak"
-                        class="h-8 opacity-60 hover:opacity-100 transition">
-                    <img src="https://logos-world.net/wp-content/uploads/2020/04/Booking-com-Logo.png"
-                        alt="Booking.com" class="h-8 opacity-60 hover:opacity-100 transition">
-                    <img src="https://logos-world.net/wp-content/uploads/2021/03/OpenTable-Logo.png" alt="OpenTable"
-                        class="h-8 opacity-60 hover:opacity-100 transition">
+                <div class="flex justify-center items-center gap-40 flex-wrap">
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Agoda_Logo_2022.svg/330px-Agoda_Logo_2022.svg.png?20220609160512"
+                        alt="Agoda"
+                        class="h-5 opacity-90 hover:opacity-100 transition">
+
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Priceline.com_logo.svg/500px-Priceline.com_logo.svg.png?20180821070811"
+                        alt="Priceline"
+                        class="h-5 opacity-90 hover:opacity-100 transition">
+
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Kayak_Logo_2017.png/640px-Kayak_Logo_2017.png"
+                        alt="Kayak"
+                        class="h-5 opacity-90 hover:opacity-100 transition">
+
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/640px-Booking.com_logo.svg.png"
+                        alt="Booking.com"
+                        class="h-5 opacity-90 hover:opacity-100 transition">
+
+                    <img
+                        src="https://upload.wikimedia.org/wikipedia/commons/8/8a/OpenTable_logo2.png?20150321201431"
+                        alt="OpenTable"
+                        class="h-5 opacity-90 hover:opacity-100 transition">
                 </div>
             </div>
-        </div>
+        </footer>
     </footer>
 
     <div class="fixed bottom-6 right-6 z-50">
