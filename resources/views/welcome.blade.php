@@ -201,34 +201,41 @@
 
                 <div class="bg-white rounded-xl shadow-2xl overflow-hidden">
 
-                    <div class="flex overflow-x-auto scrollbar-hide border-b border-gray-200">
+                    <div
+                        class="flex overflow-x-auto scrollbar-hide border-b border-gray-200 justify-center">
+
                         <button
-                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition min-w-max">
+                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition whitespace-nowrap">
                             <i class="fa-solid fa-hotel text-lg mr-2.5"></i>
                             <span class="font-semibold text-[15px]">Hotel</span>
                         </button>
+
                         <button
-                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition min-w-max">
+                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition whitespace-nowrap">
                             <i class="fa-solid fa-house-chimney text-lg mr-2.5"></i>
                             <span class="font-semibold text-[15px]">Rumah & Apt</span>
                         </button>
+
                         <button
-                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition min-w-max">
+                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition whitespace-nowrap">
                             <i class="fa-solid fa-plane-departure text-lg mr-2.5"></i>
                             <span class="font-semibold text-[15px]">Pesawat + Hotel</span>
                         </button>
+
                         <button
-                            class="flex items-center px-6 py-4 text-[#0057b8] border-b-[3px] border-[#0057b8] focus:outline-none transition min-w-max relative top-[1px] bg-white z-10">
+                            class="flex items-center px-6 py-4 text-[#0057b8] border-b-[3px] border-[#0057b8] focus:outline-none transition whitespace-nowrap relative top-[1px] bg-white z-10">
                             <i class="fa-solid fa-plane text-lg mr-2.5 rotate-[-45deg]"></i>
                             <span class="font-bold text-[15px]">Pesawat</span>
                         </button>
+
                         <button
-                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition min-w-max">
+                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition whitespace-nowrap">
                             <i class="fa-solid fa-person-snowboarding text-lg mr-2.5"></i>
                             <span class="font-semibold text-[15px]">Aktivitas</span>
                         </button>
+
                         <button
-                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition min-w-max">
+                            class="flex items-center px-6 py-4 text-[#53535f] hover:text-black hover:bg-gray-50 focus:outline-none transition whitespace-nowrap">
                             <i class="fa-solid fa-car text-lg mr-2.5"></i>
                             <span class="font-semibold text-[15px]">Transfer bandara</span>
                         </button>
@@ -264,7 +271,8 @@
                                             <option value="" disabled selected hidden>Dari mana?</option>
                                             @foreach ($airports as $airport)
                                                 <option value="{{ $airport->id }}">{{ $airport->city }}
-                                                    ({{ $airport->iata_code }})</option>
+                                                    ({{ $airport->iata_code }})
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -284,7 +292,8 @@
                                             <option value="" disabled selected hidden>Ke mana?</option>
                                             @foreach ($airports as $airport)
                                                 <option value="{{ $airport->id }}">{{ $airport->city }}
-                                                    ({{ $airport->iata_code }})</option>
+                                                    ({{ $airport->iata_code }})
+                                                </option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -362,8 +371,7 @@
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img
-                        src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=800&q=60"
+                    <img src="https://images.unsplash.com/photo-1555899434-94d1368aa7af?auto=format&fit=crop&w=800&q=60"
                         alt="Jakarta"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -375,8 +383,7 @@
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img
-                        src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=60"
+                    <img src="https://images.unsplash.com/photo-1596422846543-75c6fc197f07?auto=format&fit=crop&w=800&q=60"
                         alt="Bandung"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -388,8 +395,7 @@
             <a href="#" class="flex-shrink-0 group">
                 <div
                     class="w-[220px] h-[220px] rounded-2xl overflow-hidden mb-3 shadow-md group-hover:shadow-xl transition-shadow">
-                    <img
-                        src="https://images.unsplash.com/photo-1578469550956-0e16b69c6a3d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8am9namFrYXJ0YXxlbnwwfHwwfHx8MA%3D%3D"
+                    <img src="https://images.unsplash.com/photo-1578469550956-0e16b69c6a3d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8OHx8am9namFrYXJ0YXxlbnwwfHwwfHx8MA%3D%3D"
                         alt="Yogyakarta"
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
@@ -777,30 +783,20 @@
                 </p>
 
                 <div class="flex justify-center items-center gap-40 flex-wrap">
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Agoda_Logo_2022.svg/330px-Agoda_Logo_2022.svg.png?20220609160512"
-                        alt="Agoda"
-                        class="h-5 opacity-90 hover:opacity-100 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Agoda_Logo_2022.svg/330px-Agoda_Logo_2022.svg.png?20220609160512"
+                        alt="Agoda" class="h-5 opacity-90 hover:opacity-100 transition">
 
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Priceline.com_logo.svg/500px-Priceline.com_logo.svg.png?20180821070811"
-                        alt="Priceline"
-                        class="h-5 opacity-90 hover:opacity-100 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Priceline.com_logo.svg/500px-Priceline.com_logo.svg.png?20180821070811"
+                        alt="Priceline" class="h-5 opacity-90 hover:opacity-100 transition">
 
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Kayak_Logo_2017.png/640px-Kayak_Logo_2017.png"
-                        alt="Kayak"
-                        class="h-5 opacity-90 hover:opacity-100 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4d/Kayak_Logo_2017.png/640px-Kayak_Logo_2017.png"
+                        alt="Kayak" class="h-5 opacity-90 hover:opacity-100 transition">
 
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/640px-Booking.com_logo.svg.png"
-                        alt="Booking.com"
-                        class="h-5 opacity-90 hover:opacity-100 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/be/Booking.com_logo.svg/640px-Booking.com_logo.svg.png"
+                        alt="Booking.com" class="h-5 opacity-90 hover:opacity-100 transition">
 
-                    <img
-                        src="https://upload.wikimedia.org/wikipedia/commons/8/8a/OpenTable_logo2.png?20150321201431"
-                        alt="OpenTable"
-                        class="h-5 opacity-90 hover:opacity-100 transition">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/OpenTable_logo2.png?20150321201431"
+                        alt="OpenTable" class="h-5 opacity-90 hover:opacity-100 transition">
                 </div>
             </div>
         </footer>
