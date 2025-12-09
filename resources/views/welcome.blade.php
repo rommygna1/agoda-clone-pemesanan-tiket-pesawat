@@ -152,7 +152,7 @@
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                                     <i class="fa-regular fa-user mr-2"></i> Profil Saya
                                 </a>
-                                <a href="#"
+                                <a href="{{ route('booking.index') }}"
                                     class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-600">
                                     <i class="fa-solid fa-ticket mr-2"></i> Pesanan Saya
                                 </a>
