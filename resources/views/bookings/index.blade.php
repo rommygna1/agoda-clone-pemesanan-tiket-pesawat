@@ -438,12 +438,25 @@
                                                 <div>
                                                     <p class="text-gray-500 text-xs uppercase mb-1">Maskapai</p>
                                                     <div class="flex items-center gap-2">
-                                                        <div
-                                                            class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-500">
-                                                            {{ substr($booking->flight->airline->name ?? 'A', 0, 1) }}
+                                                        <div class="flex items-center gap-3">
+                                                            @if ($booking->flight->airline->logo ?? false)
+                                                                <img src="{{ asset('storage/' . $booking->flight->airline->logo) }}"
+                                                                    alt="{{ $booking->flight->airline->name }}"
+                                                                    class="h-5 w-auto max-w-[62px] object-contain">
+                                                              
+                                                            @else
+                                                                <div
+                                                                    class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-500">
+                                                                    {{ substr($booking->flight->airline->name ?? 'A', 0, 1) }}
+                                                                </div>
+                                                            @endif
+
                                                         </div>
                                                         <span
                                                             class="font-semibold text-gray-700">{{ $booking->flight->airline->name ?? 'Maskapai' }}</span>
+                                                        <span class="text-sm font-medium text-gray-700">
+                                                                {{ $booking->flight->flight_number }}
+                                                            </span>
                                                     </div>
                                                 </div>
                                                 <div>
