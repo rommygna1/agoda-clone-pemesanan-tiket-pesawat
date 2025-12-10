@@ -55,8 +55,8 @@
 
             <div class="flex items-center">
                 <a href="/" class="mr-8">
-                    <img src="https://images.seeklogo.com/logo-png/37/1/agoda-logo-png_seeklogo-371025.png"
-                        alt="Agoda" class="h-19 md:h-16 w-auto">
+                   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Agoda_Logo_2022.svg/330px-Agoda_Logo_2022.svg.png?20220609160512"
+                        alt="Agoda" class="h-10 md:h-10 w-auto">
                 </a>
 
                 <div class="hidden lg:flex space-x-5 text-[15px] font-semibold text-[#53535f]">

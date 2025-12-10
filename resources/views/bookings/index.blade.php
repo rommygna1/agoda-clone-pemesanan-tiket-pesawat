@@ -242,7 +242,7 @@
 
                         {{-- Empty State --}}
                         <template
-                            x-if="activeTab === 'upcoming' && {{ $bookings->where('status', '!=', 'cancelled')->isEmpty() ? 'true' : 'false' }}">
+                            x-if="activeTab === 'upcoming' && {{ $bookings->whereNotIn('status', ['cancelled','paid'])->isEmpty() ? 'true' : 'false' }}">
                             <div class="text-center py-16">
                                 <div class="inline-flex items-center justify-center w-32 h-32 mb-6">
                                     <svg class="w-full h-full text-gray-300" fill="none" stroke="currentColor"
@@ -384,12 +384,12 @@
                             </div>
                         </template>
 
-                        {{-- TAB: AKAN DATANG (dengan data tiket pesawat) --}}
+                        {{-- TAB: AKAN DATANG (paid tidak masuk ke sini) --}}
                         <template
-                            x-if="activeTab === 'upcoming' && {{ $bookings->where('status', '!=', 'cancelled')->isNotEmpty() ? 'true' : 'false' }}">
+                            x-if="activeTab === 'upcoming' && {{ $bookings->whereNotIn('status', ['cancelled','paid'])->isNotEmpty() ? 'true' : 'false' }}">
                             <div x-transition:enter="transition ease-out duration-300">
                                 <div class="space-y-4">
-                                    @foreach ($bookings->where('status', '!=', 'cancelled') as $booking)
+                                    @foreach ($bookings->whereNotIn('status', ['cancelled','paid']) as $booking)
                                         <div
                                             class="border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all bg-white">
 
@@ -406,7 +406,7 @@
                                                     <div>
                                                         <h3 class="font-bold text-gray-800 text-lg">
                                                             {{ $booking->flight->origin->city ?? 'Origin' }} <span
-                                                                class="text-gray-400 mx-1">&rarr;</span>
+                                                                class="text-gray-400 mx-1">→</span>
                                                             {{ $booking->flight->destination->city ?? 'Destination' }}
                                                         </h3>
                                                         <p class="text-sm text-gray-500">
@@ -482,23 +482,94 @@
                             </div>
                         </template>
 
-                        {{-- TAB: SELESAI --}}
+                        {{-- TAB: SELESAI (sekarang termasuk status paid) --}}
                         <template x-if="activeTab === 'completed'"
                             x-transition:enter="transition ease-out duration-300">
-                            <div class="text-center py-16">
-                                <div class="inline-flex items-center justify-center w-32 h-32 mb-6">
-                                    <svg class="w-full h-full text-gray-300" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-800 mb-2">Belum ada perjalanan selesai</h3>
-                                <p class="text-gray-500">Perjalanan yang sudah selesai akan muncul di sini.</p>
+                            <div class="space-y-4">
+                                @foreach ($bookings->whereIn('status', ['paid','confirmed','success']) as $booking)
+                                    {{-- (card yang sama persis seperti di tab Akan Datang) --}}
+                                    <div class="border-2 border-gray-200 rounded-xl p-6 hover:shadow-lg hover:border-blue-300 transition-all bg-white">
+                                        {{-- ... isi card sama persis dengan yang di atas ... --}}
+                                        {{-- Header Card --}}
+                                        <div class="flex justify-between items-start mb-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="p-2 bg-blue-50 rounded-lg text-blue-600">
+                                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                                        <path
+                                                            d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                                                        </path>
+                                                    </svg>
+                                                </div>
+                                                <div>
+                                                    <h3 class="font-bold text-gray-800 text-lg">
+                                                        {{ $booking->flight->origin->city ?? 'Origin' }} <span
+                                                            class="text-gray-400 mx-1">→</span>
+                                                        {{ $booking->flight->destination->city ?? 'Destination' }}
+                                                    </h3>
+                                                    <p class="text-sm text-gray-500">
+                                                        Kode Booking: <span
+                                                            class="font-mono font-medium text-gray-700">{{ $booking->booking_code }}</span>
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            @php
+                                                $statusClass = match ($booking->status) {
+                                                    'paid', 'confirmed', 'success' => 'bg-green-100 text-green-700',
+                                                    'pending' => 'bg-yellow-100 text-yellow-800',
+                                                    'cancelled', 'failed' => 'bg-red-100 text-red-800',
+                                                    default => 'bg-gray-100 text-gray-800',
+                                                };
+                                            @endphp
+                                            <span class="px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide {{ $statusClass }}">
+                                                {{ $booking->status }}
+                                            </span>
+                                        </div>
+
+                                        <hr class="border-gray-100 my-4">
+
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                                            <div>
+                                                <p class="text-gray-500 text-xs uppercase mb-1">Maskapai</p>
+                                                <div class="flex items-center gap-2">
+                                                    <div class="flex items-center gap-3">
+                                                        @if ($booking->flight->airline->logo ?? false)
+                                                            <img src="{{ asset('storage/' . $booking->flight->airline->logo) }}"
+                                                                alt="{{ $booking->flight->airline->name }}"
+                                                                class="h-5 w-auto max-w-[62px] object-contain">
+                                                        @else
+                                                            <div class="w-6 h-6 bg-gray-200 rounded-full flex items-center justify-center text-xs font-bold text-gray-500">
+                                                                {{ substr($booking->flight->airline->name ?? 'A', 0, 1) }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
+                                                    <span class="font-semibold text-gray-700">{{ $booking->flight->airline->name ?? 'Maskapai' }}</span>
+                                                    <span class="text-sm font-medium text-gray-700">
+                                                        {{ $booking->flight->flight_number }}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <p class="text-gray-500 text-xs uppercase mb-1">Jadwal Berangkat</p>
+                                                <p class="font-semibold text-gray-700">
+                                                    {{ \Carbon\Carbon::parse($booking->flight->departure_time)->format('d M Y, H:i') }}
+                                                </p>
+                                            </div>
+                                            <div class="text-right flex flex-col justify-end">
+                                                <a href="{{ route('booking.show', $booking->booking_code) }}"
+                                                    class="text-blue-600 font-semibold hover:underline text-sm">
+                                                    Lihat E-Tiket &rsaquo;
+                                                </a>
+                                            </div>
+                                        </div>
+
+                                        <hr class="border-gray-200 my-5">
+                                    </div>
+                                @endforeach
                             </div>
                         </template>
 
-                        {{-- TAB: DIBATALKAN --}}
+                        {{-- TAB: DIBATALKAN (tetap seperti semula) --}}
                         <template x-if="activeTab === 'cancelled'"
                             x-transition:enter="transition ease-out duration-300">
                             <div class="text-center py-16">
@@ -506,7 +577,7 @@
                                     <svg class="w-full h-full text-gray-300" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1"
-                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z">
+                                            d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 9 0 11-18 0 9 9 0 0118 0z">
                                         </path>
                                     </svg>
                                 </div>

@@ -86,8 +86,8 @@
 
             <div class="flex items-center">
                 <a href="/" class="mr-8">
-                    <img src="https://images.seeklogo.com/logo-png/37/1/agoda-logo-png_seeklogo-371025.png"
-                        alt="Agoda" class="h-20 md:h-16 w-auto">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Agoda_Logo_2022.svg/330px-Agoda_Logo_2022.svg.png?20220609160512"
+                        alt="Agoda" class="h-10 md:h-10 w-auto">
                 </a>
 
                 <div class="hidden lg:flex space-x-5 text-[15px] font-semibold text-[#53535f]">
@@ -325,7 +325,6 @@
                                             <option value="1" selected>1 Penumpang, Economy</option>
                                             <option value="2">2 Penumpang, Economy</option>
                                             <option value="3">3 Penumpang, Economy</option>
-                                            <option value="4">4 Penumpang, Economy</option>
                                         </select>
                                         <i
                                             class="fa-solid fa-chevron-down absolute right-5 text-gray-400 text-sm pointer-events-none"></i>

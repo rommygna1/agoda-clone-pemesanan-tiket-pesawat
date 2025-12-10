@@ -11,15 +11,6 @@
 </head>
 <body>
 
-    {{-- Navbar Simple --}}
-    <nav class="bg-white border-b border-gray-200 h-16 flex items-center shadow-sm sticky top-0 z-50">
-        <div class="max-w-[1140px] mx-auto px-4 w-full">
-            <a href="/" class="flex items-center gap-2">
-                <img src="https://images.seeklogo.com/logo-png/37/1/agoda-logo-png_seeklogo-371025.png" alt="Agoda" class="h-8">
-            </a>
-        </div>
-    </nav>
-
     <div class="max-w-[1140px] mx-auto px-4 py-8">
         <form action="{{ route('booking.store') }}" method="POST">
             @csrf
